@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let score = 0;
 
     const kittensColors = [
-        'red',
-        'yellow',
-        'orange',
-        'purple',
-        'green',
-        'blue'
+        'url(imgs/kitten1.png)',
+        'url(imgs/kitten2.png)',
+        'url(imgs/kitten3.png)',
+        'url(imgs/kitten4.png)',
+        'url(imgs/kitten5.png)',
+        'url(imgs/kitten6.png)'
     ];
 
     //Create Board
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             square.setAttribute('draggable',true);
             square.setAttribute('id', i);
             let randomKitten = Math.floor(Math.random()*kittensColors.length);
-            square.style.backgroundColor = kittensColors[randomKitten];
+            square.style.backgroundImage = kittensColors[randomKitten];
             grid.appendChild(square);
             squares.push(square);
 
@@ -44,36 +44,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
     squares.forEach(square => square.addEventListener('drop', dragDrop));
 
     function dragStart(){
-        kittenBeingDragged = this.style.backgroundColor;
+        kittenBeingDragged = this.style.backgroundImage;
         squareIdBeingDragged =parseInt(this.id);
-        console.log(kittenBeingDragged);
-        console.log(this.id,'dragstart');
     }
 
     function dragOver(e){
         e.preventDefault();
-        console.log(this.id,'dragover');
     }
 
     function dragEnter(e){
         e.preventDefault();
-        console.log(this.id,'dragenter');
     }
 
     function dragLeave(){
-        console.log(this.id,'dragleave');
     }
 
     function dragDrop(){
-        console.log(this.id,'drop');
-        kittenBeingReplaced = this.style.backgroundColor;
+        kittenBeingReplaced = this.style.backgroundImage;
         squareIdBeingReplaced = parseInt(this.id);
-        this.style.backgroundColor = kittenBeingDragged;
-        squares[squareIdBeingDragged].style.backgroundColor =  kittenBeingReplaced;
+        this.style.backgroundImage = kittenBeingDragged;
+        squares[squareIdBeingDragged].style.backgroundImage =  kittenBeingReplaced;
     }
 
     function dragEnd(){
-        console.log(this.id,'dragend');
         //what is a valid move?
         let validMoves = [
             squareIdBeingDragged -1, 
@@ -85,124 +78,114 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if (squareIdBeingReplaced && validMove){
             squareIdBeingReplaced = null;
         } else if (squareIdBeingReplaced && !validMove){
-            squares[squareIdBeingReplaced].style.backgroundColor = kittenBeingReplaced;
-            squares[squareIdBeingDragged].style.backgroundColor = kittenBeingDragged;
-        } else squares[squareIdBeingDragged].style.backgroundColor = kittenBeingDragged;
+            squares[squareIdBeingReplaced].style.backgroundImage = kittenBeingReplaced;
+            squares[squareIdBeingDragged].style.backgroundImage = kittenBeingDragged;
+        } else squares[squareIdBeingDragged].style.backgroundImage = kittenBeingDragged;
     }
 
     
     //Drop kittens once some have been cleared
     function moveDown(){
         for (i = 0; i < 55; i++){
-            if (squares[i + width].style.backgroundColor === ''){
-                squares[i + width].style.backgroundColor = squares[i].style.backgroundColor;
-                squares[i].style.backgroundColor = '';
+            if (squares[i + width].style.backgroundImage === ''){
+                squares[i + width].style.backgroundImage = squares[i].style.backgroundImage;
+                squares[i].style.backgroundImage = '';
                 const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
                 const isFirstRow = firstRow.includes(i);
-                if (isFirstRow && (squares[i].style.backgroundColor === '')){
+                if (isFirstRow && (squares[i].style.backgroundImage === '')){
                     let randomKitten = Math.floor(Math.random() * kittensColors.length);
-                    squares[i].style.backgroundColor = kittensColors[randomKitten];
+                    squares[i].style.backgroundImage = kittensColors[randomKitten];
                 }
             }
         }
     }
 
 
-
-    //Checking for matches
-
-    //check for row of three
-    function checkRowForThree() {
-        for (i = 0; i < 61; i++){
-            let rowOfThree = [i, i+1, i+2];
-            let decidedKitten = squares[i].style.backgroundColor;
-            const isBlank = squares[i].style.backgroundColor === '';
-            
-            const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55];
-            if(notValid.includes(i)) continue;
-
-            if (rowOfThree.every(index => squares[index].style.backgroundColor === decidedKitten && !isBlank)){
-                score += 3;
-                scoreDisplay.innerHTML = score; 
-                rowOfThree.forEach(index => {
-                    
-                    squares[index].style.backgroundColor = '';
-                })
-            }
-        }
-    }
-
-    checkRowForThree()
-
-    //check for column of three
-    function checkColumnForThree() {
-        for (i = 0; i < 47; i++){
-            let columnOfThree = [i, i+width, i+width*2];
-            let decidedKitten = squares[i].style.backgroundColor;
-            const isBlank = squares[i].style.backgroundColor === '';
-            
-            if (columnOfThree.every(index => squares[index].style.backgroundColor === decidedKitten && !isBlank)){
-                score += 3;
-                scoreDisplay.innerHTML = score; 
-                columnOfThree.forEach(index => {
-                    
-                    squares[index].style.backgroundColor = '';
-                })
-            }
-        }
-    }
-
-    checkColumnForThree()
-
-//check for row of four
+//for row of Four
 function checkRowForFour() {
-    for (i = 0; i < 61; i++){
-        let rowOfFour = [i, i+1, i+2, i+3];
-        let decidedKitten = squares[i].style.backgroundColor;
-        const isBlank = squares[i].style.backgroundColor === '';
-        
-        const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55];
-        if(notValid.includes(i)) continue;
+    for (i = 0; i < 60; i ++) {
+      let rowOfFour = [i, i+1, i+2, i+3]
+      let decidedKitten = squares[i].style.backgroundImage
+      const isBlank = squares[i].style.backgroundImage === ''
 
-        if (rowOfFour.every(index => squares[index].style.backgroundColor === decidedKitten && !isBlank)){
-            score += 4;
-            scoreDisplay.innerHTML = score; 
-            rowOfFour.forEach(index => {
-                
-                squares[index].style.backgroundColor = '';
-            })
-        }
+      const notValid = [5, 6, 7, 13, 14, 15, 21, 22, 23, 29, 30, 31, 37, 38, 39, 45, 46, 47, 53, 54, 55]
+      if (notValid.includes(i)) continue
+
+      if(rowOfFour.every(index => squares[index].style.backgroundImage === decidedKitten && !isBlank)) {
+        score += 4
+        scoreDisplay.innerHTML = score
+        rowOfFour.forEach(index => {
+        squares[index].style.backgroundImage = ''
+        })
+      }
     }
-}
+  }
+  checkRowForFour()
 
-checkRowForFour()
+//for column of Four
+  function checkColumnForFour() {
+    for (i = 0; i < 39; i ++) {
+      let columnOfFour = [i, i+width, i+width*2, i+width*3]
+      let decidedKitten = squares[i].style.backgroundImage
+      const isBlank = squares[i].style.backgroundImage === ''
 
-//check for column of four
-function checkColumnForFour() {
-    for (i = 0; i < 47; i++){
-        let columnOfFour = [i, i+width, i+width*2, i+width*3];
-        let decidedKitten = squares[i].style.backgroundColor;
-        const isBlank = squares[i].style.backgroundColor === '';
-        
-        if (columnOfFour.every(index => squares[index].style.backgroundColor === decidedKitten && !isBlank)){
-            score += 4;
-            scoreDisplay.innerHTML = score; 
-            columnOfFour.forEach(index => {
-                
-                squares[index].style.backgroundColor = '';
-            })
-        }
+      if(columnOfFour.every(index => squares[index].style.backgroundImage === decidedKitten && !isBlank)) {
+        score += 4
+        scoreDisplay.innerHTML = score
+        columnOfFour.forEach(index => {
+        squares[index].style.backgroundImage = ''
+        })
+      }
     }
-}
-
+  }
 checkColumnForFour()
+
+  //for row of Three
+  function checkRowForThree() {
+    for (i = 0; i < 61; i ++) {
+      let rowOfThree = [i, i+1, i+2]
+      let decidedKitten = squares[i].style.backgroundImage
+      const isBlank = squares[i].style.backgroundImage === ''
+
+      const notValid = [6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55]
+      if (notValid.includes(i)) continue
+
+      if(rowOfThree.every(index => squares[index].style.backgroundImage === decidedKitten && !isBlank)) {
+        score += 3
+        scoreDisplay.innerHTML = score
+        rowOfThree.forEach(index => {
+        squares[index].style.backgroundImage = ''
+        })
+      }
+    }
+  }
+  checkRowForThree()
+
+//for column of Three
+  function checkColumnForThree() {
+    for (i = 0; i < 47; i ++) {
+      let columnOfThree = [i, i+width, i+width*2]
+      let decidedKitten = squares[i].style.backgroundImage
+      const isBlank = squares[i].style.backgroundImage === ''
+
+      if(columnOfThree.every(index => squares[index].style.backgroundImage === decidedKitten && !isBlank)) {
+        score += 3
+        scoreDisplay.innerHTML = score
+        columnOfThree.forEach(index => {
+        squares[index].style.backgroundImage = ''
+        })
+      }
+    }
+  }
+checkColumnForThree()
 
 
     window.setInterval(function(){
-        moveDown()
+        
         checkRowForFour()
         checkColumnForFour()
         checkRowForThree()
         checkColumnForThree()
+        moveDown()
     }, 100);
 })

@@ -1,13 +1,73 @@
 
+@font-face {
+    font-family: Bubble;
+    src: url(fonts/akaDylan\ Open.ttf);
+  }
+
+
+body{
+    
+   background-image: url("imgs/PastelBackground.jpg");
+}
+
+#Header{
+    font-family: Bubble;
+    text-align: center;
+    font-size: 115px;
+    color: rgba(80, 79, 80, 0.9);
+}
+
+.container {
+    display: flex;
+    -webkit-display: box;
+    -moz-display: box;
+    -ms-display: flexbox;
+    -webkit-display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    /* padding-top: 9%; */
+    margin: 0;
+  }
 
 .grid {
+    -webkit-display: box;
+    -moz-display: box;
+    -ms-display: flexbox;
     height: 560px;
     width: 560px;
     display: flex;
     flex-wrap: wrap;
+    background-color: rgba(240, 243, 247, 0.5);
+    padding:5px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset, 0 1px 0 #fff;
+
+    
 }
 
 .grid div{
     height: 70px;
     width: 70px;
 }
+
+.score-board {
+    font-family: Bubble;
+    display: block;
+    position: absolute;
+    background-color: pink;
+    border-radius: 10px;
+    margin-top: 50px;
+    left: 650px;
+    margin-bottom: 350px;
+    min-width: 200px;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-image: linear-gradient(#FFB6C1, #FFC0CB);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) inset, 0 1px 0 #fff;
+    color: #85796b;
+  }
